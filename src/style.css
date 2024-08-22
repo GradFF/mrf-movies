@@ -1,3 +1,66 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+bode,
+html {
+  @apply bg-zinc-950 text-zinc-50 antialiased;
+}
+
+p {
+  @apply mb-4 text-zinc-300;
+}
+
+.container {
+  @apply max-w-screen-lg mx-auto px-4 md:px-6 lg:px-8;
+}
+
+/* Headings */
+
+.title {
+  @apply text-[3rem] leading-tight  font-bold;
+}
+
+.title-sm {
+  @apply text-[2.25rem] leading-snug  font-semibold;
+}
+
+.subtitle {
+  @apply text-[1.75rem] leading-relaxed  font-semibold;
+}
+
+.subtitle-sm {
+  @apply text-[1.25] leading-relaxed  font-medium;
+}
+
+.body {
+  @apply text-base leading-relaxed font-normal;
+}
+
+.body-sm {
+  @apply text-sm leading-relaxed font-normal;
+}
+
+.muted {
+  @apply text-gray-400;
+}
+
+.link {
+  @apply body-sm muted hover:text-indigo-400;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center px-4 py-2 rounded shadow-sm transition-all duration-200 transform outline-none focus:active:scale-95 disabled:opacity-70;
+}
+
+.btn-primary {
+  @apply bg-indigo-500 hover:bg-indigo-600 disabled:hover:bg-indigo-500;
+}
+
+.btn-danger {
+  @apply bg-red-500 hover:bg-red-600 disabled:hover:bg-red-500;
+}
+
+.btn-outline {
+  @apply border border-zinc-700 hover:bg-zinc-900;
+}
