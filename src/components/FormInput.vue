@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label v-if="label" for="email" class="block body-sm muted">{{
+    <label v-if="label" for="email" class="block body-sm mb-1">{{
       label
     }}</label>
     <textarea
@@ -41,6 +41,6 @@ defineProps({
 })
 
 const classes = computed(() => {
-  return 'mt-1 block w-full px-4 py-2 bg-transparent outline-none rounded border border-zinc-700 focus:ring focus:border-zinc-500 focus:ring-indigo-500 focus:ring-opacity-30 focus:active:bg-transparent'
+  return 'block w-full px-4 py-2 bg-transparent outline-none rounded border border-zinc-700 focus:ring focus:border-zinc-500 focus:ring-indigo-500 focus:ring-opacity-30 focus:active:bg-transparent placeholder:text-zinc-500'
 })
 </script>

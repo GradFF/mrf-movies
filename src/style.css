@@ -64,3 +64,7 @@ p {
 .btn-outline {
   @apply border border-zinc-700 hover:bg-zinc-900;
 }
+
+.btn-icon-sm {
+  @apply h-8 w-8;
+}
