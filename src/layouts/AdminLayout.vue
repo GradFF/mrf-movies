@@ -4,8 +4,8 @@
       <nav class="container py-4 flex items-center justify-between">
         <div class="flex items-center justify-between">
           <div class="flex flex-col">
-            <span class="body-sm">Mrfneto</span>
-            <span class="body-sm muted -mt-1">mrfneto@gmail.com</span>
+            <span class="body-sm">{{ store.user?.displayName }}</span>
+            <span class="body-sm muted -mt-1">{{ store.user?.email }}</span>
           </div>
         </div>
         <div class="w-1/2 px-8 text-center">
@@ -34,11 +34,20 @@
 </template>
 
 <script setup>
+import { auth } from '@/firebase'
+import { useStore } from '@/stores'
+import { signOut } from 'firebase/auth'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const store = useStore()
 
-const logout = () => {
-  router.replace({ name: 'login' })
+const logout = async () => {
+  try {
+    await signOut(auth)
+    router.replace({ name: 'login' })
+  } catch (error) {
+    console.log(error)
+  }
 }
 </script>

@@ -1,3 +1,4 @@
+import { useStore } from '@/stores'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -6,6 +7,7 @@ const router = createRouter({
     {
       path: '/',
       component: () => import('@/layouts/AdminLayout.vue'),
+      meta: { requiresAuth: true },
       children: [
         {
           path: '',
@@ -37,6 +39,7 @@ const router = createRouter({
     {
       path: '/auth',
       component: () => import('@/layouts/AuthLayout.vue'),
+      meta: { requiresUnauth: true },
       children: [
         {
           path: 'login',
@@ -51,6 +54,19 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+router.beforeEach(async (to, from, next) => {
+  const { getCurrentUser } = useStore()
+
+  const user = await getCurrentUser()
+
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const requiresUnauth = to.matched.some(record => record.meta.requiresUnauth)
+
+  if (requiresAuth && !user) next({ name: 'login' })
+  else if (requiresUnauth && user) next({ name: 'home' })
+  else next()
 })
 
 export default router
