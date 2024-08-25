@@ -20,8 +20,9 @@
       :placeholder="placeholder"
       :required="required"
       v-model="model"
+      autocomplete="on"
     />
-    <span v-if="error" class="block mt-1 text-red-500 text-sm">{{
+    <span v-if="error" class="block mt-1 text-red-400 text-sm">{{
       error
     }}</span>
   </div>
@@ -31,7 +32,7 @@
 import { computed } from 'vue'
 const model = defineModel()
 
-defineProps({
+const props = defineProps({
   id: { type: String, required: true },
   type: { type: String, default: 'text' },
   label: String,
@@ -41,6 +42,10 @@ defineProps({
 })
 
 const classes = computed(() => {
-  return 'block w-full px-4 py-2 bg-transparent outline-none rounded border border-zinc-700 focus:ring focus:border-zinc-500 focus:ring-indigo-500 focus:ring-opacity-30 focus:active:bg-transparent placeholder:text-zinc-500'
+  return `block w-full px-4 py-2 bg-transparent outline-none rounded border  focus:ring focus:ring-opacity-30 focus:active:bg-transparent placeholder:text-zinc-500 ${
+    props.error
+      ? 'border-red-200 focus:border-300-500 focus:ring-red-500 '
+      : 'border-zinc-700 focus:border-zinc-500 focus:ring-indigo-500 '
+  }`
 })
 </script>

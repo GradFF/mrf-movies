@@ -10,6 +10,7 @@
         label="E-mail"
         required
         v-model="email"
+        :error="error?.email"
       />
       <FormInput
         id="password"
@@ -18,6 +19,7 @@
         required
         v-model="password"
         class="mt-4"
+        :error="error?.password"
       />
 
       <RouterLink to="#" class="link float-right mt-2">
@@ -37,18 +39,45 @@
 <script setup>
 import FormInput from '@/components/FormInput.vue'
 import FormSubmit from '@/components/FormSubmit.vue'
+
 import { ref } from 'vue'
+import { auth } from '@/firebase'
+import { useRouter } from 'vue-router'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+
+const router = useRouter()
 
 const email = ref('')
 const password = ref('')
 
+const error = ref(null)
+
 const loading = ref(false)
 
-const onSubmit = () => {
+const onSubmit = async () => {
   loading.value = true
-  setTimeout(() => {
-    console.log('Submitted:', email.value, password.value)
+  error.value = {}
+  try {
+    await signInWithEmailAndPassword(auth, email.value, password.value)
+    router.replace({ name: 'home' })
+  } catch (err) {
+    switch (err.code) {
+      case 'auth/invalid-email':
+        error.value.email = 'E-mail inválido'
+        break
+      case 'auth/user-not-found':
+        error.value.email = 'O usuário não correponde à nenhuma credencial.'
+        break
+      case 'auth/wrong-password':
+        error.value.password = 'Senha incorreta'
+        break
+      default:
+        error.value.email = 'E-mail ou senha estavam incorretos'
+        break
+    }
+    console.log(err)
+  } finally {
     loading.value = false
-  }, 1000)
+  }
 }
 </script>
