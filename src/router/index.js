@@ -28,6 +28,11 @@ const router = createRouter({
           path: '/movies/:id/show',
           name: 'movies-show',
           component: () => import('@/views/MovieDetails.vue')
+        },
+        {
+          path: '/profile',
+          name: 'profile',
+          component: () => import('@/views/Profile.vue')
         }
       ]
     },

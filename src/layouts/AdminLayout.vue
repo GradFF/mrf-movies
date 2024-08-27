@@ -4,7 +4,15 @@
       <nav class="container py-4 flex items-center justify-between">
         <div class="flex items-center justify-between">
           <div class="flex flex-col">
-            <span class="body-sm">Olá! {{ store.user?.displayName }}</span>
+            <div class="flex items-center space-x-2">
+              <span class="body-sm">Olá!</span>
+              <RouterLink
+                :to="{ name: 'profile' }"
+                class="btn btn-icon-sm btn-ghost"
+              >
+                <EditIcon class="size-3" />
+              </RouterLink>
+            </div>
             <span class="body-sm muted -mt-1">{{ store.user?.email }}</span>
           </div>
         </div>
@@ -34,6 +42,8 @@
 </template>
 
 <script setup>
+import EditIcon from '@/components/icons/EditIcon.vue'
+
 import { auth } from '@/firebase'
 import { useStore } from '@/stores'
 import { signOut } from 'firebase/auth'

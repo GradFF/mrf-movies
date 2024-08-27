@@ -53,6 +53,10 @@ p {
   @apply inline-flex items-center justify-center px-4 py-2 rounded shadow-sm transition-all duration-200 transform outline-none focus:active:scale-95 disabled:opacity-70;
 }
 
+.btn-ghost {
+  @apply hover:bg-zinc-900;
+}
+
 .btn-primary {
   @apply bg-indigo-500 hover:bg-indigo-600 disabled:hover:bg-indigo-500;
 }
@@ -66,5 +70,8 @@ p {
 }
 
 .btn-icon-sm {
-  @apply h-8 w-8;
+  @apply h-8 w-8 px-0;
+}
+.btn-icon-xs {
+  @apply h-6 w-6 px-0;
 }

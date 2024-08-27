@@ -21,6 +21,7 @@
       :required="required"
       v-model="model"
       autocomplete="on"
+      :readonly="readonly"
     />
     <span v-if="error" class="block mt-1 text-red-400 text-sm">{{
       error
@@ -38,7 +39,8 @@ const props = defineProps({
   label: String,
   error: String,
   required: Boolean,
-  placeholder: String
+  placeholder: String,
+  readonly: Boolean
 })
 
 const classes = computed(() => {
