@@ -5,11 +5,7 @@
       Voltar
     </RouterLink>
 
-    <div v-if="loading" class="text-center py-4">
-      <span class="subtitle-sm">Carregando ...</span>
-    </div>
-
-    <div v-else>
+    <div  >
       <div v-if="movie">
         <div class="flex items-center space-x-8 mt-4">
           <h1 class="title-sm">{{ movie?.title }}</h1>

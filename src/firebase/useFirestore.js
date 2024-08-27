@@ -21,13 +21,13 @@ export const useFirestore = collectionName => {
 
   const router = useRouter()
 
-  const save = async (data, id = null, routerName = null) => {
+  const save = async (data, id = null) => {
     loading.value = true
     try {
       const result = id
         ? await updateDoc(doc(db, collectionName, id), data)
         : await addDoc(collection(db, collectionName), data)
-      routerName && router.replace({ name: routerName })
+
       return id ? id : result
     } catch (error) {
       console.log(error)

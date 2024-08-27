@@ -6,11 +6,11 @@
     </RouterLink>
     <h1 class="title-sm mt-4">{{ id ? 'Editar' : 'Novo' }} Filme</h1>
 
-    <div v-if="loading" class="text-center py-4">
+    <!-- <div v-if="loading" class="text-center py-4">
       <span class="subtitle-sm">Carregando ...</span>
-    </div>
+    </div> -->
 
-    <form v-else @submit.prevent="onSubmit" class="mt-8">
+    <form @submit.prevent="onSubmit" class="mt-8">
       <div class="grid grid-cols-2 gap-4">
         <FormInput
           id="title"
@@ -133,9 +133,12 @@ const onSubmit = async () => {
   }
 
   const docRef = await save(form.value, id.value || null)
+  alert('Registro salvo com sucesso!')
 
-  alert('Registro salvo com sucesso.')
-  router.replace({ name: 'movies-show', params: { id: id.value || docRef.id } })
+  router.replace({
+    name: 'movies-show',
+    params: { id: id.value || docRef.id }
+  })
 }
 
 onMounted(async () => {

@@ -4,7 +4,7 @@
       <nav class="container py-4 flex items-center justify-between">
         <div class="flex items-center justify-between">
           <div class="flex flex-col">
-            <span class="body-sm">{{ store.user?.displayName }}</span>
+            <span class="body-sm">Olá! {{ store.user?.displayName }}</span>
             <span class="body-sm muted -mt-1">{{ store.user?.email }}</span>
           </div>
         </div>
