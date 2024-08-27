@@ -4,9 +4,13 @@
       <LeftIcon class="size-4 mr-2" />
       Voltar
     </RouterLink>
-    <h1 class="title-sm mt-4">Novo filme</h1>
+    <h1 class="title-sm mt-4">{{ id ? 'Editar' : 'Novo' }} Filme</h1>
 
-    <form @submit.prevent="onSubmit" class="mt-8">
+    <div v-if="loading" class="text-center py-4">
+      <span class="subtitle-sm">Carregando ...</span>
+    </div>
+
+    <form v-else @submit.prevent="onSubmit" class="mt-8">
       <div class="grid grid-cols-2 gap-4">
         <FormInput
           id="title"
@@ -28,7 +32,7 @@
       <FormInput
         id="score"
         type="textarea"
-        v-model="form.score"
+        v-model="form.note"
         label="observações"
         required
         placeholder="Observações"
@@ -85,9 +89,20 @@
 import LeftIcon from '@/components/icons/LeftIcon.vue'
 import FormInput from '@/components/FormInput.vue'
 import FormSubmit from '@/components/FormSubmit.vue'
-import { ref } from 'vue'
 import PlusIcon from '@/components/icons/PlusIcon.vue'
 import CloseIcon from '@/components/icons/CloseIcon.vue'
+
+import { useStore } from '@/stores'
+import { useRoute, useRouter } from 'vue-router'
+import { getCurrentDate } from '@/utils/date'
+import { computed, onMounted, ref } from 'vue'
+import { useFirestore } from '@/firebase/useFirestore'
+
+const { user } = useStore()
+const { loading, save, find } = useFirestore('movies')
+
+const route = useRoute()
+const router = useRouter()
 
 const gender = ref('')
 
@@ -98,7 +113,7 @@ const form = ref({
   genres: []
 })
 
-const loading = ref(false)
+const id = computed(() => route.params.id)
 
 const addGender = () => {
   if (gender.value) {
@@ -111,11 +126,25 @@ const removeGender = item => {
   form.value.genres = form.value.genres.filter(i => i != item)
 }
 
-const onSubmit = () => {
-  loading.value = true
-  setTimeout(() => {
-    console.log('Submitted:', email.value, password.value)
-    loading.value = false
-  }, 1000)
+const onSubmit = async () => {
+  if (!id.value) {
+    form.value.user = { id: user.uid, displayName: user.displayName }
+    form.value.createdAt = getCurrentDate()
+  }
+
+  const docRef = await save(form.value, id.value || null)
+
+  alert('Registro salvo com sucesso.')
+  router.replace({ name: 'movies-show', params: { id: id.value || docRef.id } })
 }
+
+onMounted(async () => {
+  if (id.value) {
+    form.value = await find(id.value)
+    if (!form.value) {
+      router.replace({ name: 'home' })
+      alert('Registro não localizado.')
+    }
+  }
+})
 </script>

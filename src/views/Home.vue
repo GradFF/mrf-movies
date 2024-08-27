@@ -9,28 +9,35 @@
     </div>
 
     <div class="mt-8">
-      <ul>
-        <li class="p-4 rounded w-full bg-zinc-900">
-          <RouterLink :to="{ name: 'movies-show', params: { id: 1 } }">
-            <h2 class="subtitle">O Poderoso Chefão</h2>
+      <div v-if="loading" class="text-center py-4">
+        <span class="subtitle-sm">Carregando ...</span>
+      </div>
+      <ul v-else class="space-y-2">
+        <li
+          class="p-4 rounded w-full bg-zinc-900"
+          v-for="(item, index) in movies"
+          :key="index"
+        >
+          <RouterLink :to="{ name: 'movies-show', params: { id: item.id } }">
+            <h2 class="subtitle">{{ item.title }}</h2>
             <div class="flex space-x-2">
               <StarIcon
-                v-for="item in 5"
-                :key="item.id"
+                v-for="i in parseInt(item.score)"
+                :key="i"
                 class="size-3 text-indigo-500"
               />
             </div>
             <p class="body-sm mt-2">
-              Don Vito Corleone (Marlon Brando) é o chefe de uma "família" de
-              Nova York que está feliz, pois Connie (Talia Shire), sua filha, se
-              casou com Carlo (Gianni Russo). Porém, durante a festa, Bonasera
-              (Salvatore Corsitto) é visto no escritório de Don Corleone pedindo
-              "justiça", vingança na verdade contra membros de uma quadrilha,
-              que espancaram ...
+              {{ `${item.note.substring(0, 150)} ...` }}
             </p>
             <ul class="flex space-x-2">
-              <li class="body-sm muted px-2 rounded bg-zinc-950">Policial</li>
-              <li class="body-sm muted px-2 rounded bg-zinc-950">Drama</li>
+              <li
+                class="body-sm muted px-2 rounded bg-zinc-950"
+                v-for="(gender, index) in item.genres"
+                :key="index"
+              >
+                {{ gender }}
+              </li>
             </ul>
           </RouterLink>
         </li>
@@ -42,9 +49,24 @@
 <script setup>
 import PlusIcon from '@/components/icons/PlusIcon.vue'
 import StarIcon from '@/components/icons/StarIcon.vue'
-import { useStore } from '@/stores'
 
-const { user } = useStore()
+import { onMounted, ref } from 'vue'
+import { useFirestore } from '@/firebase/useFirestore'
+
+const { loading, get } = useFirestore('movies')
+
+const movies = ref([])
+const lastVisible = ref(null)
+
+onMounted(async () => {
+  const { docs, lastVisible: lastDoc } = await get({
+    sorting: [{ field: 'title' }],
+    limitCount: 5
+  })
+
+  movies.value = docs
+  lastVisible.value = lastDoc
+})
 </script>
 
 <style lang="scss" scoped></style>
